@@ -85,14 +85,10 @@ async def imagegen(query: str):
         headers={
             "Content-Type": "application/json",
             "Accept": "application/json",
-            "Authorization": f"Bearer API-KEY"
+            "Authorization": "Bearer API-KEY",
         },
         json={
-            "text_prompts": [
-                {
-                    "text": query
-                }
-            ],
+            "text_prompts": [{"text": query}],
             "cfg_scale": 7,
             "height": 1024,
             "width": 1024,
@@ -102,7 +98,7 @@ async def imagegen(query: str):
     )
 
     if response.status_code != 200:
-        raise Exception("Non-200 response: " + str(response.text))
+        raise Exception(f"Non-200 response: {response.text}")
 
     data = response.json()
 
@@ -111,5 +107,5 @@ async def imagegen(query: str):
             f.write(base64.b64decode(image["base64"]))
 
     combine_image_and_audio()
-    
+
     return "done"
